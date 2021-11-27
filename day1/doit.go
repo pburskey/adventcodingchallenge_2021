@@ -4,7 +4,6 @@ import (
 	"adventcodingchallenge_2021/utility"
 	"fmt"
 	"path/filepath"
-	"strconv"
 )
 
 const day = "1"
@@ -15,16 +14,24 @@ func main() {
 		panic(err)
 	}
 
-	solution := Solution(data)
-	fmt.Println(fmt.Sprintf("Result: %d", solution))
+	_, solution_a := solution_part_a(data)
+	fmt.Println(fmt.Sprintf("Result: %d", solution_a))
+
+	_, solution_b := solution_part_b(data)
+	fmt.Println(fmt.Sprintf("Result: %d", solution_b))
+
 }
 
-func Solution(data []string) interface{} {
-	sum := 0
-	for i, aRow := range data {
-		fmt.Println(fmt.Sprintf("Row: %d ...... %s", i, aRow))
-		aNumber, _ := strconv.Atoi(aRow)
-		sum += aNumber
-	}
-	return sum
+func solution_part_a(data []string) (error, interface{}) {
+	algorithm := &Part1{}
+	_, solution := algorithm.Process(data)
+	return nil, solution
+
+}
+
+func solution_part_b(data []string) (error, interface{}) {
+	algorithm := &Part2{}
+	_, solution := algorithm.Process(data)
+	return nil, solution
+
 }

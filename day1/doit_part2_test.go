@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestSolutionWithSampleData(t *testing.T) {
+func TestSolutionPart2WithSampleData(t *testing.T) {
 	type args struct {
 		data []string
 	}
@@ -24,18 +24,18 @@ func TestSolutionWithSampleData(t *testing.T) {
 					"2000",
 				},
 			},
-			want: 3000},
+			want: -3000},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := Solution(tt.args.data); !reflect.DeepEqual(got, tt.want) {
+			if _, got := solution_part_b(tt.args.data); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Solution() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func TestSolutionWithSampleDataFile(t *testing.T) {
+func TestSolutionPart2WithSampleDataFile(t *testing.T) {
 	type args struct {
 		fileName string
 	}
@@ -49,7 +49,7 @@ func TestSolutionWithSampleDataFile(t *testing.T) {
 			args: args{
 				fileName: "data.txt",
 			},
-			want: 4695,
+			want: -4695,
 		},
 	}
 	for _, tt := range tests {
@@ -58,7 +58,7 @@ func TestSolutionWithSampleDataFile(t *testing.T) {
 			if err != nil {
 				t.Error(err)
 			}
-			if got := Solution(inputData); !reflect.DeepEqual(got, tt.want) {
+			if _, got := solution_part_b(inputData); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Solution() = %v, want %v", got, tt.want)
 			}
 		})
