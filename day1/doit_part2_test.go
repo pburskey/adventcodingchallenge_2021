@@ -7,34 +7,6 @@ import (
 	"testing"
 )
 
-func TestSolutionPart2WithSampleData(t *testing.T) {
-	type args struct {
-		data []string
-	}
-	tests := []struct {
-		name string
-		args args
-		want interface{}
-	}{
-		{
-			name: "Sunny Day Easy data 1",
-			args: args{
-				data: []string{
-					"1000",
-					"2000",
-				},
-			},
-			want: -3000},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if _, got := solution_part_b(tt.args.data); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Solution() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func TestSolutionPart2WithSampleDataFile(t *testing.T) {
 	type args struct {
 		fileName string
@@ -47,9 +19,9 @@ func TestSolutionPart2WithSampleDataFile(t *testing.T) {
 		{
 			name: "Sunny Day 1",
 			args: args{
-				fileName: "data.txt",
+				fileName: "data_test.txt",
 			},
-			want: -4695,
+			want: 5,
 		},
 	}
 	for _, tt := range tests {

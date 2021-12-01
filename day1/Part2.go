@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strconv"
 )
 
@@ -9,11 +8,23 @@ type Part2 struct {
 }
 
 func (alg *Part2) Process(data []string) (error, interface{}) {
-	sum := 0
-	for i, aRow := range data {
-		fmt.Println(fmt.Sprintf("Row: %d ...... %s", i, aRow))
-		aNumber, _ := strconv.Atoi(aRow)
-		sum -= aNumber
+	var processed []string
+	length := len(data)
+	for i, _ := range data {
+		if (i + 2) < length {
+			a, _ := strconv.Atoi(data[i])
+			b, _ := strconv.Atoi(data[i+1])
+			c, _ := strconv.Atoi(data[i+2])
+			sum := a + b + c
+			processed = append(processed, strconv.Itoa(sum))
+		}
 	}
-	return nil, sum
+
+	if len(processed) > 0 {
+		part1 := &Part1{}
+		part1.Process(processed)
+		return nil, part1.increase
+	}
+
+	return nil, 0
 }

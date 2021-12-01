@@ -9,16 +9,16 @@ import (
 const day = "1"
 
 func main() {
-	data, err := utility.ParseInputFileIntoRows(filepath.Join(utility.AssembleFilePathToDay(day), "data.txt"))
+	data, err := utility.ParseInputFileIntoRows(filepath.Join(utility.AssembleFilePathToDay(day), "input.txt"))
 	if err != nil {
 		panic(err)
 	}
 
 	_, solution_a := solution_part_a(data)
-	fmt.Println(fmt.Sprintf("Result: %d", solution_a))
+	fmt.Println(fmt.Sprintf("Result Part 1: %d", solution_a))
 
 	_, solution_b := solution_part_b(data)
-	fmt.Println(fmt.Sprintf("Result: %d", solution_b))
+	fmt.Println(fmt.Sprintf("Result Part 2: %d", solution_b))
 
 }
 
