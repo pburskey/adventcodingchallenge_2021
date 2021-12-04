@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-const day = "1"
+const day = "3"
 
 func main() {
 	data, err := utility.ParseDayForInputIntoStringRows(day, "input.txt")

@@ -18,14 +18,14 @@ func TestSolutionPart1WithSampleDataFile(t *testing.T) {
 		{
 			name: "Sunny Day 1",
 			args: args{
-				fileName: "data_test.txt",
+				fileName: "input_sample.txt",
 			},
-			want: 7,
+			want: 150,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			inputData, err := utility.ParseDayForInputIntoStringRows(day, tt.args.fileName)
+			inputData, err := utility.ParseInputFileIntoStringRows(tt.args.fileName)
 			if err != nil {
 				t.Error(err)
 			}

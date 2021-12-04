@@ -2,7 +2,6 @@ package main
 
 import (
 	"adventcodingchallenge_2021/utility"
-	"path/filepath"
 	"reflect"
 	"testing"
 )
@@ -26,7 +25,7 @@ func TestSolutionPart2WithSampleDataFile(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			inputData, err := utility.ParseInputFileIntoRows(filepath.Join(utility.AssembleFilePathToDay(day), tt.args.fileName))
+			inputData, err := utility.ParseDayForInputIntoStringRows(day, tt.args.fileName)
 			if err != nil {
 				t.Error(err)
 			}
