@@ -4,10 +4,22 @@ type Part2 struct {
 }
 
 func (alg *Part2) Process(data []string) (error, interface{}) {
-	metrics := Parse(data)
 
-	oxygen := metrics.oxygen()
-	c02 := metrics.c02Scrubber()
+	input, boards := Parse(data)
 
-	return nil, (oxygen * c02)
+	bingo := &Bingo{
+		input:  input,
+		boards: boards,
+	}
+
+	bingo.Play()
+	winningNumber := bingo.winningNumbers[len(bingo.winningNumbers)-1]
+	winningBoard := bingo.winners[len(bingo.winners)-1]
+	pieces := winningBoard.Unmarked()
+	var sum int
+	for _, piece := range pieces {
+		sum += piece.value
+	}
+
+	return nil, (sum * winningNumber)
 }
