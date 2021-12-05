@@ -5,6 +5,14 @@ import (
 	"strconv"
 )
 
+func StringToInt(aString string) int {
+	aNumber, err := strconv.Atoi(aString)
+	if err != nil {
+		panic("Expected a number and got: " + aString)
+	}
+	return aNumber
+}
+
 func BytesToInt(byteArray []byte) int {
 	/*
 		lets convert to a string
