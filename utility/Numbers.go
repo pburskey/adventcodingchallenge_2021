@@ -2,6 +2,7 @@ package utility
 
 import (
 	"log"
+	"sort"
 	"strconv"
 )
 
@@ -19,6 +20,18 @@ func LeastAndMax(numbers []int) (int, int) {
 
 	}
 	return least, max
+}
+
+func OrderNumbersStartingWithAndEndingWith(numbers []int, start int, end int) []int {
+
+	if numbers[0] == start && numbers[len(numbers)-1] == end {
+		return numbers
+	} else {
+
+		sort.Sort(sort.Reverse(sort.IntSlice(numbers)))
+		return numbers
+	}
+	return numbers
 }
 
 func NumbersBetween(start int, end int) []int {

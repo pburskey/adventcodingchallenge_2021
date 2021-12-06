@@ -22,7 +22,7 @@ type Field struct {
 	coordinates []*Coordinate
 }
 
-func (c *CoordinateRange) determineCoordinatesInRange() []*Coordinate {
+func (c *CoordinateRange) determineCoordinatesInRange(includeDiag bool) []*Coordinate {
 	coordinates := make([]*Coordinate, 0)
 	if c.start.x == c.end.x {
 		x := c.start.x
@@ -52,16 +52,21 @@ func (c *CoordinateRange) determineCoordinatesInRange() []*Coordinate {
 		}
 
 	} else {
-		xNumbers := utility.NumbersBetween(c.start.x, c.end.x)
-		yNumbers := utility.NumbersBetween(c.start.y, c.end.y)
+		if includeDiag {
+			xNumbers := utility.NumbersBetween(c.start.x, c.end.x)
+			utility.OrderNumbersStartingWithAndEndingWith(xNumbers, c.start.x, c.end.x)
+			yNumbers := utility.NumbersBetween(c.start.y, c.end.y)
+			utility.OrderNumbersStartingWithAndEndingWith(yNumbers, c.start.y, c.end.y)
 
-		for j := 0; j < len(xNumbers); j++ {
-			aCoordinate := &Coordinate{
-				x: xNumbers[j],
-				y: yNumbers[j],
+			for j := 0; j < len(xNumbers); j++ {
+				aCoordinate := &Coordinate{
+					x: xNumbers[j],
+					y: yNumbers[j],
+				}
+				coordinates = append(coordinates, aCoordinate)
 			}
-			coordinates = append(coordinates, aCoordinate)
 		}
+
 	}
 
 	return coordinates
@@ -96,7 +101,7 @@ func Parse(data []string) []*CoordinateRange {
 	return coordinateRanges
 }
 
-func (alg *Part1) Process(data []string) (error, interface{}) {
+func (alg *Part1) Process(data []string, diag bool) (error, interface{}) {
 
 	ranges := Parse(data)
 	field := &Field{
@@ -104,7 +109,7 @@ func (alg *Part1) Process(data []string) (error, interface{}) {
 	}
 	//coordinates := make([]*Coordinate, 0)
 	for _, aRange := range ranges {
-		aSetOfCoordinates := aRange.determineCoordinatesInRange()
+		aSetOfCoordinates := aRange.determineCoordinatesInRange(diag)
 		if aSetOfCoordinates != nil {
 			for _, aCoordinate := range aSetOfCoordinates {
 				field.coordinates = append(field.coordinates, aCoordinate)

@@ -3,7 +3,8 @@ package main
 type Part2 struct {
 }
 
-func (alg *Part2) Process(data []string) (error, interface{}) {
+func (alg *Part2) Process(data []string, diag bool) (error, interface{}) {
 
-	return nil, nil
+	part1 := &Part1{}
+	return part1.Process(data, diag)
 }

@@ -23,14 +23,14 @@ func main() {
 
 func solution_part_a(data []string) (error, interface{}) {
 	algorithm := &Part1{}
-	_, solution := algorithm.Process(data)
+	_, solution := algorithm.Process(data, false)
 	return nil, solution
 
 }
 
 func solution_part_b(data []string) (error, interface{}) {
 	algorithm := &Part2{}
-	_, solution := algorithm.Process(data)
+	_, solution := algorithm.Process(data, true)
 	return nil, solution
 
 }

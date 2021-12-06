@@ -50,11 +50,13 @@ func TestCoordinateRange_determineCoordinatesInRange(t *testing.T) {
 	}
 	tests := []struct {
 		name   string
+		diag   bool
 		fields fields
 		want   []*Coordinate
 	}{
 		{
 			name: "x",
+			diag: false,
 			fields: fields{
 				start: &Coordinate{
 					x: 0,
@@ -82,6 +84,7 @@ func TestCoordinateRange_determineCoordinatesInRange(t *testing.T) {
 		},
 		{
 			name: "x reverse",
+			diag: false,
 			fields: fields{
 				start: &Coordinate{
 					x: 0,
@@ -110,6 +113,7 @@ func TestCoordinateRange_determineCoordinatesInRange(t *testing.T) {
 
 		{
 			name: "diag a",
+			diag: true,
 			fields: fields{
 				start: &Coordinate{
 					x: 1,
@@ -126,7 +130,7 @@ func TestCoordinateRange_determineCoordinatesInRange(t *testing.T) {
 					y: 1,
 				},
 				&Coordinate{
-					x: 1,
+					x: 2,
 					y: 2,
 				},
 				&Coordinate{
@@ -138,6 +142,7 @@ func TestCoordinateRange_determineCoordinatesInRange(t *testing.T) {
 
 		{
 			name: "diag b",
+			diag: true,
 			fields: fields{
 				start: &Coordinate{
 					x: 9,
@@ -170,7 +175,7 @@ func TestCoordinateRange_determineCoordinatesInRange(t *testing.T) {
 				start: tt.fields.start,
 				end:   tt.fields.end,
 			}
-			if got := c.determineCoordinatesInRange(); !reflect.DeepEqual(got, tt.want) {
+			if got := c.determineCoordinatesInRange(tt.diag); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("determineCoordinatesInRange() = %v, want %v", got, tt.want)
 			}
 		})
