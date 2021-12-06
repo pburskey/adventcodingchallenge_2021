@@ -5,6 +5,32 @@ import (
 	"strconv"
 )
 
+func LeastAndMax(numbers []int) (int, int) {
+
+	least := numbers[0]
+	max := numbers[0]
+	for _, aNumber := range numbers {
+		if aNumber < least {
+			least = aNumber
+		}
+		if aNumber > max {
+			max = aNumber
+		}
+
+	}
+	return least, max
+}
+
+func NumbersBetween(start int, end int) []int {
+	least, max := LeastAndMax([]int{start, end})
+
+	numbers := make([]int, 0)
+	for x := least; x <= max; x++ {
+		numbers = append(numbers, x)
+	}
+	return numbers
+}
+
 func StringToInt(aString string) int {
 	aNumber, err := strconv.Atoi(aString)
 	if err != nil {
