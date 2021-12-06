@@ -20,14 +20,14 @@ func TestSolutionPart1WithSampleDataFile(t *testing.T) {
 			args: args{
 				fileName: "input_sample.txt",
 			},
-			want: 5,
+			want: 5934,
 		},
 		{
 			name: "real input",
 			args: args{
 				fileName: "input.txt",
 			},
-			want: 7674,
+			want: 380758,
 		},
 	}
 	for _, tt := range tests {
