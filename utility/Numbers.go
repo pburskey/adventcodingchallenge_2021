@@ -6,6 +6,32 @@ import (
 	"strconv"
 )
 
+func Average(numbers []int) int {
+	return Mean(numbers)
+}
+
+func Mean(numbers []int) int {
+	sum := 0
+	for _, aNumber := range numbers {
+		sum += aNumber
+	}
+	result := sum / len(numbers)
+	return result
+}
+
+func Median(numbers []int) float32 {
+	median := float32(0)
+	middle := len(numbers) / 2
+	if (len(numbers) % 2) == 1 {
+		median = float32(numbers[middle])
+	} else {
+		temp := numbers[middle] + numbers[middle-1]
+		median = float32(float32(temp) / float32(2))
+	}
+
+	return median
+}
+
 func LeastAndMax(numbers []int) (int, int) {
 
 	least := numbers[0]
