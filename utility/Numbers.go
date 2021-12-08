@@ -94,3 +94,13 @@ func BytesToInt(byteArray []byte) int {
 	}
 	return int(anInt)
 }
+
+func SliceToInt(aSlice []int) int {
+	result := 0
+	power := 1
+	for i := len(aSlice) - 1; i >= 0; i-- {
+		result += aSlice[i] * power
+		power *= 10
+	}
+	return result
+}
