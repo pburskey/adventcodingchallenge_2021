@@ -25,8 +25,38 @@ type cypherKeys struct {
 	private map[int]string
 }
 
+func (ck *cypherKeys) decode(s *displaySegment) bool {
+
+	matches := make([]int, 0)
+	for aValue, aPrivateKey := range ck.private {
+		privateContainsThisCypher := fullyContains(aPrivateKey, s.cypher)
+
+		if privateContainsThisCypher {
+			matches = append(matches, aValue)
+		}
+	}
+
+	for _, aKey := range matches {
+		aPrivate := ck.private[aKey]
+		if strings.EqualFold(aPrivate, s.cypher) {
+			s.decoded = true
+			s.value = aKey
+			break
+		}
+	}
+
+	return s.decoded
+}
+
 func (ck *cypherKeys) loadKeys() {
 	ck.private = make(map[int]string, 0)
+
+	for x, aString := range ck.public {
+
+		aStringAsArray := strings.Split(aString, "")
+		sort.Strings(aStringAsArray)
+		ck.public[x] = strings.Join(aStringAsArray, "")
+	}
 
 	/*
 		get the easy ones
@@ -53,9 +83,9 @@ func (ck *cypherKeys) loadKeys() {
 			/*
 				a 0 fully contains a 7
 			*/
-			if ck.notMapped(9) && contains(aKey, ck.private[4]) {
+			if ck.notMapped(9) && fullyContains(aKey, ck.private[4]) {
 				ck.private[9] = aKey
-			} else if ck.notMapped(0) && contains(aKey, ck.private[7]) {
+			} else if ck.notMapped(0) && fullyContains(aKey, ck.private[7]) {
 				ck.private[0] = aKey
 			} else {
 				ck.private[6] = aKey
@@ -71,9 +101,9 @@ func (ck *cypherKeys) loadKeys() {
 			/*
 				a 0 fully contains a 7
 			*/
-			if ck.notMapped(3) && contains(aKey, ck.private[7]) {
+			if ck.notMapped(3) && fullyContains(aKey, ck.private[7]) {
 				ck.private[3] = aKey
-			} else if ck.notMapped(5) && contains(ck.private[6], aKey) {
+			} else if ck.notMapped(5) && fullyContains(ck.private[6], aKey) {
 				ck.private[5] = aKey
 			} else {
 				ck.private[2] = aKey
@@ -81,7 +111,7 @@ func (ck *cypherKeys) loadKeys() {
 		}
 	}
 
-	ck.prettyPrintKeys()
+	//ck.prettyPrintKeys()
 }
 
 func (ck *cypherKeys) prettyPrintKeys() {
@@ -95,12 +125,12 @@ func (ck *cypherKeys) notMapped(aKey int) bool {
 	return !ok
 }
 
-func contains(source string, target string) bool {
+func fullyContains(source string, target string) bool {
 
-	//sourceAsArray := strings.Split(source, "")
-	//sort.Strings(sourceAsArray)
+	sourceAsArray := strings.Split(source, "")
+	sort.Strings(sourceAsArray)
 	targetAsArray := strings.Split(target, "")
-	//sort.Strings(targetAsArray)
+	sort.Strings(targetAsArray)
 
 	found := true
 	for x := 0; found && x < len(targetAsArray); x++ {
@@ -109,54 +139,6 @@ func contains(source string, target string) bool {
 
 	return found
 
-}
-
-func (s *displaySegment) closelyMatches(aString string) bool {
-	letters := strings.Split(aString, "")
-	sort.Strings(letters)
-
-	cypherAsArrayOfStrings := strings.Split(s.cypher, "")
-	sort.Strings(cypherAsArrayOfStrings)
-
-	found := true
-	for x := 0; found && x < len(letters) && x < len(cypherAsArrayOfStrings); x++ {
-		found = (strings.EqualFold(letters[x], cypherAsArrayOfStrings[x]))
-	}
-
-	itdoes := found
-	return itdoes
-}
-
-func (s *displaySegment) cypherContainsOnlyLetters(letters []string) bool {
-	itDoes := false
-	cypherAsArrayOfStrings := strings.Split(s.cypher, "")
-	//sort.Strings(cypherAsArrayOfStrings)
-	sort.Strings(letters)
-
-	found := true
-	for x := 0; found && x < len(letters) && x < len(cypherAsArrayOfStrings); x++ {
-		found = (strings.EqualFold(letters[x], cypherAsArrayOfStrings[x]))
-	}
-	itDoes = found
-	return itDoes
-}
-
-func (s *displaySegment) decode(cypherKeys *cypherKeys) bool {
-
-	cypherAsArrayOfStrings := strings.Split(s.cypher, "")
-	sort.Strings(cypherAsArrayOfStrings)
-	s.cypher = strings.Join(cypherAsArrayOfStrings, "")
-
-	cypherKeys
-	for aKey, aPrivateValue := range cypherKeys.private {
-		if s.closestMatch(cypherKeys) {
-			s.decoded = true
-			s.value = aKey
-			break
-		}
-	}
-
-	return s.decoded
 }
 
 func Parse(data []string) []*entry {

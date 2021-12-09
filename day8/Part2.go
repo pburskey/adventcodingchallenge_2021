@@ -2,8 +2,9 @@ package main
 
 import (
 	"adventcodingchallenge_2021/utility"
-	"fmt"
 	"log"
+	"sort"
+	"strings"
 )
 
 type Part2 struct {
@@ -22,14 +23,19 @@ func (alg *Part2) Process(data []string) (error, interface{}) {
 		values := make([]int, 0)
 		for _, anOutputValue := range anEntry.outputValues {
 
+			cypherAsArrayOfStrings := strings.Split(anOutputValue, "")
+			sort.Strings(cypherAsArrayOfStrings)
+			anOutputValue = strings.Join(cypherAsArrayOfStrings, "")
+
 			aCypher := &displaySegment{
 				cypher: anOutputValue,
 			}
+			keys.decode(aCypher)
 
-			if !aCypher.decode(keys) {
+			if !aCypher.decoded {
 				log.Fatalln("Unable to decode: " + anOutputValue)
 			}
-			fmt.Printf("Cypher: %s Value: %d\n", anOutputValue, aCypher.value)
+			//fmt.Printf("Cypher: %s Value: %d\n", anOutputValue, aCypher.value)
 			values = append(values, aCypher.value)
 
 		}
