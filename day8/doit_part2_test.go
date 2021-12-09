@@ -20,7 +20,7 @@ func TestSolutionPart2WithSampleDataFile(t *testing.T) {
 			args: args{
 				fileName: "input_sample2.txt",
 			},
-			want: 61229,
+			want: 5353,
 		},
 		{
 			name: "sample input",

@@ -1,57 +1,12 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"sort"
 	"strings"
 )
 
 type Part1 struct {
-}
-
-func (alg *Part1) Decypher(data []string) (input []*entry, countMap map[int]int, decodedMap map[string]*displaySegment) {
-	input = Parse(data)
-
-	countMap = make(map[int]int, 0)
-	decodedMap = make(map[string]*displaySegment, 0)
-	for _, anEntry := range input {
-		keys := &cypherKeys{
-			public: anEntry.signalPatterns,
-		}
-		keys.loadKeys()
-
-		for _, anOutputValue := range anEntry.outputValues {
-
-			cypherAsArrayOfStrings := strings.Split(anOutputValue, "")
-			sort.Strings(cypherAsArrayOfStrings)
-			anOutputValue = strings.Join(cypherAsArrayOfStrings, "")
-
-			aCypher, _ := decodedMap[anOutputValue]
-			if aCypher == nil {
-				aCypher = &displaySegment{
-					cypher: anOutputValue,
-				}
-
-				successful := aCypher.decode(keys)
-				if successful {
-					decodedMap[aCypher.cypher] = aCypher
-				} else {
-					log.Fatalln("Unable to decode: " + anOutputValue)
-				}
-
-			}
-
-			if aCypher != nil && aCypher.decoded {
-				if _, ok := countMap[aCypher.value]; !ok {
-					countMap[aCypher.value] = 0
-				}
-				countMap[aCypher.value]++
-			}
-
-		}
-	}
-
-	return
 }
 
 type entry struct {
@@ -126,6 +81,13 @@ func (ck *cypherKeys) loadKeys() {
 		}
 	}
 
+	ck.prettyPrintKeys()
+}
+
+func (ck *cypherKeys) prettyPrintKeys() {
+	for key, value := range ck.private {
+		fmt.Printf("Value: %d ... Cypher Key: %s\n", key, value)
+	}
 }
 
 func (ck *cypherKeys) notMapped(aKey int) bool {
@@ -149,6 +111,22 @@ func contains(source string, target string) bool {
 
 }
 
+func (s *displaySegment) closelyMatches(aString string) bool {
+	letters := strings.Split(aString, "")
+	sort.Strings(letters)
+
+	cypherAsArrayOfStrings := strings.Split(s.cypher, "")
+	sort.Strings(cypherAsArrayOfStrings)
+
+	found := true
+	for x := 0; found && x < len(letters) && x < len(cypherAsArrayOfStrings); x++ {
+		found = (strings.EqualFold(letters[x], cypherAsArrayOfStrings[x]))
+	}
+
+	itdoes := found
+	return itdoes
+}
+
 func (s *displaySegment) cypherContainsOnlyLetters(letters []string) bool {
 	itDoes := false
 	cypherAsArrayOfStrings := strings.Split(s.cypher, "")
@@ -169,10 +147,12 @@ func (s *displaySegment) decode(cypherKeys *cypherKeys) bool {
 	sort.Strings(cypherAsArrayOfStrings)
 	s.cypher = strings.Join(cypherAsArrayOfStrings, "")
 
+	cypherKeys
 	for aKey, aPrivateValue := range cypherKeys.private {
-		if s.cypherContainsOnlyLetters(strings.Split(aPrivateValue, "")) {
+		if s.closestMatch(cypherKeys) {
 			s.decoded = true
 			s.value = aKey
+			break
 		}
 	}
 
@@ -211,13 +191,25 @@ func Parse(data []string) []*entry {
 }
 
 func (alg *Part1) Process(data []string) (error, interface{}) {
-	_, countMap, _ := alg.Decypher(data)
+	input := Parse(data)
 
 	count := 0
-	for key, value := range countMap {
-		if key == 1 || key == 4 || key == 8 || key == 7 {
-			count += value
+	for _, anEntry := range input {
+
+		for _, aKey := range anEntry.outputValues {
+			length := len(aKey)
+			switch length {
+			case 2:
+				count++
+			case 3:
+				count++
+			case 4:
+				count++
+			case 7:
+				count++
+			}
 		}
+
 	}
 
 	return nil, count
