@@ -72,3 +72,21 @@ func ParseDayForInputIntoStringRows(day string, path string) ([]string, error) {
 func ParseDayForInputIntoNumberRows(day string, path string) ([]int, error) {
 	return parseInputFileIntoNumberRows(filepath.Join(assembleFilePathToDay(day), path))
 }
+
+func ParseRowsToInts(data []string) [][]int {
+
+	array := make([][]int, len(data))
+
+	for y, row := range data {
+		anArrayOfNumbers := make([]int, len(row))
+		strings := strings.Split(row, "")
+
+		for x, aString := range strings {
+			aNumber, _ := strconv.Atoi(aString)
+			anArrayOfNumbers[x] = aNumber
+		}
+
+		array[y] = anArrayOfNumbers
+	}
+	return array
+}

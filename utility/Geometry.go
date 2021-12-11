@@ -59,6 +59,54 @@ func (c *CoordinateRange) DetermineCoordinatesInRange(includeDiag bool) []*Coord
 	return coordinates
 }
 
-func PrettyPrint(coordinates []*Coordinate) {
+func SimplePositionsRelativeTo(xstart, ystart int, endOfY int, endOfX int) []*Coordinate {
+	coordinates := make([]*Coordinate, 0)
+	for x := (xstart - 1); x <= (xstart + 1); x++ {
 
+		if x != xstart {
+			if x >= 0 && x < endOfX {
+				coordinate := &Coordinate{
+					X: x,
+					Y: ystart,
+				}
+				coordinates = append(coordinates, coordinate)
+			}
+		}
+
+	}
+
+	for y := (ystart - 1); y <= (ystart + 1); y++ {
+
+		if y != ystart {
+			if y >= 0 && y < endOfY {
+				coordinate := &Coordinate{
+					X: xstart,
+					Y: y,
+				}
+				coordinates = append(coordinates, coordinate)
+			}
+		}
+
+	}
+
+	return coordinates
 }
+
+//
+//func PositionsRelativeTo(xstart, ystart int) []*utility.Coordinate {
+//	coordinates := make([]*utility.Coordinate, 0)
+//	for x := (xstart - 1); x < (xstart + 1); x++ {
+//		for y := (ystart - 1); y < (ystart + 1); y++ {
+//
+//			if x >= 0 && y >= 0 && (x != xstart && y != ystart) {
+//				coordinate := &utility.Coordinate{
+//					X: x,
+//					Y: y,
+//				}
+//				coordinates = append(coordinates, coordinate)
+//			}
+//
+//		}
+//	}
+//	return coordinates
+//}

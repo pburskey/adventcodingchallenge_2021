@@ -76,7 +76,7 @@ func (s *SearchForBasins) search(aLowPointCoordinate *utility.Coordinate) {
 		lengthOfY := len(s.input)
 		lengthOfX := len(s.input[0])
 
-		adjacentLocations := SimplePositionsRelativeTo(aLowPointCoordinate.X, aLowPointCoordinate.Y, lengthOfY, lengthOfX)
+		adjacentLocations := utility.SimplePositionsRelativeTo(aLowPointCoordinate.X, aLowPointCoordinate.Y, lengthOfY, lengthOfX)
 
 		for _, aLocationCoordinate := range adjacentLocations {
 			aCandidateHeight := s.input[aLocationCoordinate.Y][aLocationCoordinate.X]
@@ -118,7 +118,7 @@ func FindLowPoints(input [][]int) []*utility.Coordinate {
 		for x, _ := range input[y] {
 			height := input[y][x]
 			//fmt.Printf("Y: %d X: %d Height: %d\n", y, x, height)
-			adjacentLocations := SimplePositionsRelativeTo(x, y, len(input), len(input[y]))
+			adjacentLocations := utility.SimplePositionsRelativeTo(x, y, len(input), len(input[y]))
 
 			lowPoint := math.MaxInt32
 			for _, aLocationCoordinate := range adjacentLocations {
