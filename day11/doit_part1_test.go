@@ -15,6 +15,13 @@ func TestSolutionPart1WithSampleDataFile(t *testing.T) {
 		args args
 		want interface{}
 	}{
+		//{
+		//	name: "sample input",
+		//	args: args{
+		//		fileName: "input_sample2.txt",
+		//	},
+		//	want: 1656,
+		//},
 		{
 			name: "sample input",
 			args: args{

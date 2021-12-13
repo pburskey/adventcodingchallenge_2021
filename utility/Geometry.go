@@ -1,5 +1,7 @@
 package utility
 
+import "fmt"
+
 type Coordinate struct {
 	X int
 	Y int
@@ -92,21 +94,36 @@ func SimplePositionsRelativeTo(xstart, ystart int, endOfY int, endOfX int) []*Co
 	return coordinates
 }
 
-//
-//func PositionsRelativeTo(xstart, ystart int) []*utility.Coordinate {
-//	coordinates := make([]*utility.Coordinate, 0)
-//	for x := (xstart - 1); x < (xstart + 1); x++ {
-//		for y := (ystart - 1); y < (ystart + 1); y++ {
-//
-//			if x >= 0 && y >= 0 && (x != xstart && y != ystart) {
-//				coordinate := &utility.Coordinate{
-//					X: x,
-//					Y: y,
-//				}
-//				coordinates = append(coordinates, coordinate)
-//			}
-//
-//		}
-//	}
-//	return coordinates
-//}
+func PositionsRelativeTo(xstart, ystart int, endOfY int, endOfX int) []*Coordinate {
+	coordinates := make([]*Coordinate, 0)
+	for y := (ystart - 1); y <= (ystart + 1); y++ {
+		for x := (xstart - 1); x <= (xstart + 1); x++ {
+
+			if y < endOfY && x < endOfX {
+				if x >= 0 && y >= 0 {
+
+					skip := (x == xstart && y == ystart)
+					if !skip {
+						coordinate := &Coordinate{
+							X: x,
+							Y: y,
+						}
+						coordinates = append(coordinates, coordinate)
+					}
+
+				}
+			}
+
+		}
+	}
+	return coordinates
+}
+
+func PrettyPrintInts(data [][]int) {
+	for y, _ := range data {
+		for x, _ := range data[y] {
+			fmt.Printf("%d", data[y][x])
+		}
+		fmt.Printf("\n")
+	}
+}

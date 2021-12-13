@@ -2,6 +2,7 @@ package main
 
 import (
 	"adventcodingchallenge_2021/utility"
+	"fmt"
 )
 
 type Part1 struct {
@@ -17,15 +18,21 @@ func Parse(data []string) [][]int {
 func (alg *Part1) Process(data []string) (error, interface{}) {
 	alg.data = Parse(data)
 
-	for x := 0; x < alg.steps; x++ {
-		alg.ProcessStep()
+	numberOfFlashes := 0
+	for x := 0; x <= alg.steps; x++ {
+
+		fmt.Printf("Step %d\n", int(x))
+		utility.PrettyPrintInts(alg.data)
+		numberOfFlashes += alg.ProcessStep()
+		fmt.Printf("\n\n\n\n")
 	}
 
-	result := 0
-	return nil, result
+	return nil, numberOfFlashes
 }
 
-func (alg *Part1) ProcessStep() {
+func (alg *Part1) ProcessStep() int {
+	numberOfFlashes := 0
+
 	/*
 		phase 1
 	*/
@@ -35,21 +42,51 @@ func (alg *Part1) ProcessStep() {
 		}
 	}
 
-	coordinatesEligibleToFlash := alg.FindReadyToFlash()
-	for coordinatesEligibleToFlash != nil && len(coordinatesEligibleToFlash) > ){
-		for _, aCoordinate := range coordinatesEligibleToFlash {
-			/*
-				coordinate energy is set to 0
-			*/
-			alg.data[aCoordinate.Y][aCoordinate.X] = 0
-		}
+	for true {
 
-		/*
-			for each coordinate, increase energy levels in all directions; distance 1,
-		*/
+		ok, flashesThisIteration := alg.ProcessFlashes()
+		numberOfFlashes += flashesThisIteration
+
+		if !ok {
+			break
+		}
 
 	}
 
+	return numberOfFlashes
+}
+
+func (alg *Part1) ProcessFlashes() (bool, int) {
+	numberOfFlashes := 0
+
+	coordinatesEligibleToFlash := alg.FindReadyToFlash()
+	if coordinatesEligibleToFlash == nil || len(coordinatesEligibleToFlash) == 0 {
+		return false, numberOfFlashes
+	}
+
+	for _, aCoordinate := range coordinatesEligibleToFlash {
+		/*
+			coordinate energy is set to 0
+		*/
+		alg.data[aCoordinate.Y][aCoordinate.X] = 0
+		numberOfFlashes++
+	}
+
+	/*
+		for each coordinate, increase energy levels in all directions; distance 1,
+	*/
+	for _, aCoordinate := range coordinatesEligibleToFlash {
+		relativeCoordinates := utility.PositionsRelativeTo(aCoordinate.Y, aCoordinate.X, len(alg.data), len(alg.data[0]))
+		for _, aRelativeCoordinate := range relativeCoordinates {
+			currentEnergyLevel := alg.data[aRelativeCoordinate.Y][aRelativeCoordinate.X]
+			if currentEnergyLevel > 0 {
+				alg.data[aRelativeCoordinate.Y][aRelativeCoordinate.X]++
+			}
+
+		}
+	}
+
+	return true, numberOfFlashes
 }
 
 func (alg *Part1) FindReadyToFlash() []*utility.Coordinate {
@@ -58,7 +95,7 @@ func (alg *Part1) FindReadyToFlash() []*utility.Coordinate {
 	for y, _ := range alg.data {
 		for x, _ := range alg.data[y] {
 			energyLevel := alg.data[y][x]
-			if energyLevel >= 9 {
+			if energyLevel != 0 && energyLevel > 9 {
 
 				flashEligible = append(flashEligible, &utility.Coordinate{
 					X: x,
