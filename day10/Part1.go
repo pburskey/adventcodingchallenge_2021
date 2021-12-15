@@ -1,6 +1,7 @@
 package main
 
 import (
+	"adventcodingchallenge_2021/utility"
 	"log"
 	"strings"
 )
@@ -71,48 +72,17 @@ func closes(anInterestingString string, lastOnStack string) bool {
 	return itDoes
 }
 
-type SimpleStringStack struct {
-	stack []string
-}
-
-func (s *SimpleStringStack) reverse() []string {
-	return s.stack
-}
-
-func (s *SimpleStringStack) push(aString string) {
-	s.stack = append(s.stack, aString)
-}
-
-func (s *SimpleStringStack) hasMore() bool {
-	return len(s.stack) > 0
-}
-
-func (s *SimpleStringStack) pop() string {
-	index := len(s.stack) - 1
-	aString := s.stack[index]
-	s.stack = s.stack[:index]
-	return aString
-}
-
-func (s *SimpleStringStack) peek() string {
-	index := len(s.stack) - 1
-	aString := s.stack[index]
-	return aString
-}
-
-func (c *command) parse() (bool, *SimpleStringStack) {
+func (c *command) parse() (bool, *utility.SimpleStringStack) {
 	c.failurePosition = -1
 	//fmt.Println(strings.Join(c.inputAsArray, ""))
 
-	stack := &SimpleStringStack{
-		stack: make([]string, 0),
-	}
+	stack := utility.NewSimpleStringStack()
 	for x, aCharacter := range c.inputAsArray {
 		if isOpening(aCharacter) {
-			stack.push(aCharacter)
+			stack.Push(aCharacter)
 		} else if isClosing(aCharacter) {
-			if closes(aCharacter, stack.peek()) {
-				stack.pop()
+			if closes(aCharacter, stack.Peek()) {
+				stack.Pop()
 			} else {
 				c.failurePosition = x
 				break

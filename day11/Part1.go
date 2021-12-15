@@ -19,11 +19,14 @@ func (alg *Part1) Process(data []string) (error, interface{}) {
 	alg.data = Parse(data)
 
 	numberOfFlashes := 0
-	for x := 0; x <= alg.steps; x++ {
 
-		fmt.Printf("Step %d\n", int(x))
-		utility.PrettyPrintInts(alg.data)
+	utility.PrettyPrintInts(alg.data)
+	fmt.Printf("\n\n\n\n")
+	for x := 1; x <= alg.steps; x++ {
+
 		numberOfFlashes += alg.ProcessStep()
+		fmt.Printf("After Step %d\n", int(x))
+		utility.PrettyPrintInts(alg.data)
 		fmt.Printf("\n\n\n\n")
 	}
 
@@ -70,12 +73,7 @@ func (alg *Part1) ProcessFlashes() (bool, int) {
 		*/
 		alg.data[aCoordinate.Y][aCoordinate.X] = 0
 		numberOfFlashes++
-	}
 
-	/*
-		for each coordinate, increase energy levels in all directions; distance 1,
-	*/
-	for _, aCoordinate := range coordinatesEligibleToFlash {
 		relativeCoordinates := utility.PositionsRelativeTo(aCoordinate.Y, aCoordinate.X, len(alg.data), len(alg.data[0]))
 		for _, aRelativeCoordinate := range relativeCoordinates {
 			currentEnergyLevel := alg.data[aRelativeCoordinate.Y][aRelativeCoordinate.X]
@@ -84,6 +82,7 @@ func (alg *Part1) ProcessFlashes() (bool, int) {
 			}
 
 		}
+
 	}
 
 	return true, numberOfFlashes
@@ -95,7 +94,7 @@ func (alg *Part1) FindReadyToFlash() []*utility.Coordinate {
 	for y, _ := range alg.data {
 		for x, _ := range alg.data[y] {
 			energyLevel := alg.data[y][x]
-			if energyLevel != 0 && energyLevel > 9 {
+			if energyLevel > 9 {
 
 				flashEligible = append(flashEligible, &utility.Coordinate{
 					X: x,

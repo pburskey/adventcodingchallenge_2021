@@ -94,7 +94,7 @@ func SimplePositionsRelativeTo(xstart, ystart int, endOfY int, endOfX int) []*Co
 	return coordinates
 }
 
-func PositionsRelativeTo(xstart, ystart int, endOfY int, endOfX int) []*Coordinate {
+func PositionsRelativeTo(ystart, xstart int, endOfY int, endOfX int) []*Coordinate {
 	coordinates := make([]*Coordinate, 0)
 	for y := (ystart - 1); y <= (ystart + 1); y++ {
 		for x := (xstart - 1); x <= (xstart + 1); x++ {
